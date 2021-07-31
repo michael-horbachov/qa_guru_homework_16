@@ -1,0 +1,35 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def junitVersion = "5.7.2"
+
+dependencies {
+    testImplementation(
+            "org.junit.jupiter:junit-jupiter-api:$junitVersion",
+            "io.rest-assured:rest-assured:4.4.0",
+            "org.assertj:assertj-core:3.20.2"
+    )
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.withType(Test) {
+    systemProperties(System.getProperties())
+    useJUnitPlatform()
+
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
